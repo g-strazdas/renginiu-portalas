@@ -25,6 +25,11 @@ Route::post('/update/{event}', [EventController::class, 'storeUpdate']);
 Route::get('/renginys/delete/{event}',[EventController::class, 'deleteEvent']);
 Route::get('/about',[EventController::class, 'about']);
 Route::get('/contacts',[EventController::class, 'contacts']);
+Route::get('/renginys/add-registration/{event}',[EventController::class, 'showRegistration']);
+Route::post('/storeRegistration',[EventController::class, 'storeRegistration']);
+
+Route::get('/registrations',[EventController::class, 'showRegistrations']);
+
 
 Auth::routes();
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

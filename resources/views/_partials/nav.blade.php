@@ -9,6 +9,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/contacts">Kontaktai</a></li>
                         @if(Auth::check())
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="/add-event">Naujo renginio įvedimas</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="/registrations">Vartotojų registracijos</a></li>
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="/logout">Atsijungti</a></li>
                         @else
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="/login">Prisijungti</a></li>
