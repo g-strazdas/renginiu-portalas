@@ -26,7 +26,7 @@
                 <input type="text" name="phone" class="form-control" placeholder="Kontaktinis tel." value="{{old('phone')}}">
             </div>
             <div class="form-group mb-2">
-                <textarea name="description"  id="" cols="30" rows="3" placeholder="Renginio aprašymas" class="form-control"></textarea>
+                <textarea name="description"  id="" cols="30" rows="6" placeholder="Renginio aprašymas" class="form-control"></textarea>
             </div>
             <div class="form-group mb-2">
                 <label>Paveikslėlis</label>

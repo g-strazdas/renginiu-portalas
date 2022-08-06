@@ -4,10 +4,10 @@
         <div class="card mb-3 border-1">
             <div class="row g-0">
                 <div class="card-header fs-3 bg-warning d-flex">
-                    <div class="d-flex align-items-center gap-3 col-lg-3">
+                    <div class="d-flex align-items-center gap-2 col-lg-3">
                         @if(Auth::check())
-                            <a href="/renginys/delete/{{$event->id}}" class="btn btn-primary">Šalinimas</a>
-                            <a href="/renginys/update/{{$event->id}}" class="btn btn-primary">Duomenų atnaujinimas</a>
+                            <a href="/renginys/delete/{{$event->id}}" class="btn btn-danger" onclick="return confirm('Patvirtinkite renginio pašalinimą')">Šalinimas</a>
+                            <a href="/renginys/update/{{$event->id}}" class="btn btn-success">Redagavimas</a>
                         @else
                             <a href="/renginys/add-registration/{{$event->id}}" class="btn btn-primary">Registruotis...</a>
                         @endif
