@@ -1,4 +1,4 @@
-@extends('main', [$title = 'Renginiai: pages/contacts.blade.php']))
+@extends('main', [$title = 'Renginiai: kontaktai']))
 @section('content')
     <div class="container py-5">
         <div class="card mb-3 border-0">

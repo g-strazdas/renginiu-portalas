@@ -10,10 +10,4 @@ class EventModel extends Model
     public $timestamps = false;
     use HasFactory;
     protected $fillable = ['name','place','organizer','phone','description','starts','ends','logo','user_id'];
-
-//    public function registrationsAdd()
-//    {
-//        return $this->hasMany('App\Registration');
-//    }
-
 }

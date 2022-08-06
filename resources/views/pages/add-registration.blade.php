@@ -1,4 +1,4 @@
-@extends('main', [$title = 'Renginiai: pages/add-registration.blade.php']))
+@extends('main', [$title = 'Renginiai: registracija']))
 @section('content')
     <div class="container pt-5">
         <div class="card mb-3 border-1">

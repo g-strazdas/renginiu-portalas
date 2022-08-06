@@ -18,38 +18,38 @@ class EventController extends Controller
     public function __construct()
     {$this->middleware('auth', ['except' => ['index', 'about', 'showEvent', 'contacts', 'showRegistration','storeRegistration']]);}
 
-    public function index()
+    public function index() //TRUMPAS APRAŠYMAS BOOTSTRAP CARD'UOSE SU MYGTUKU "PLATESNĖ INFORMACIJA IR REGISTRACIJA..."
     {
-        $events = EventModel::all();    //gauname duomenis apie visus renginius iš db
-        return view('pages.home', compact('events'));  //gražiname šabloną su duomenimis
+        $events = EventModel::all();    //Gauname visus duomenis iš duomenų bazės event_models
+        return view('pages.home', compact('events'));  //Gražiname į pages.home su duomenimis apie remginius smulkioms kortelėms pagrindiniame puslapyje
     }
 
-    public function about()
+    public function about() //PUSLAPIS "APIE PROJEKTĄ" SU UŽDAVINIO INFORMACIJA
     {
-        return view('pages.about');  //gražiname puslapį su uždavinio informacija
+        return view('pages.about');
     }
 
-    public function contacts()
+    public function contacts() //KONTAKTŲ PUSLAPIS
     {
-        return view('pages.contacts');  //gražiname kontaktų puslapį
+        return view('pages.contacts');
     }
 
-    public function addEvent()
+    public function addEvent() //RENGINIO PRIDĖJIMO FORMA
     {
         return view('pages.add-event');
     }
 
-    public function showEvent(EventModel $event)
+    public function showEvent(EventModel $event) //PLATESNĖ RENGINIO INFORMACIJA, JEI AUTH - RODOMI MYGTUKAI "ŠALINTI","DUOMENŲ ATNAUJINIMAS" O JEI NE AUTH - "REGISTRUOTIS"
     {
         return view('pages.event', compact('event'));
     }
 
-    public function showRegistration(EventModel $event)
+    public function showRegistration(EventModel $event) //DUOMENYS VARTOTOJUI REGISTRUOTIS Į RENGINĮ PATEIKIAMI Į FORMĄ SU RENGINIO INFORMACIJA - PAVADINIMUI IR FOTO FORMOJE
     {
         return view('pages.add-registration', compact('event'));
     }
 
-    public function showRegistrations()  //VARTOTOJŲ REGISTRACIJOMS IŠVESTI
+    public function showRegistrations()  //VARTOTOJŲ REGISTRACIJOMS REDAGUOTI IŠVEDIMO DUOMENYS
     {
         $registrations = DB::table('registrations')
             ->join('event_models', 'event_models.id', '=', 'registrations.event_id')
@@ -60,7 +60,7 @@ class EventController extends Controller
     }
 
 
-    public function updateEvent(EventModel $event)
+    public function updateEvent(EventModel $event)  //AUTH RENGINIO REDAGAVIMAS
     {
 //        if(Gate::denies('update-event',$event)){
 //            dd('Tu neturi teisės atlikti šį veiksmą');
@@ -68,19 +68,39 @@ class EventController extends Controller
         return view('pages.update-event', compact('event'));
     }
 
-    public function deleteEvent(EventModel $event)
+    public function deleteEvent(EventModel $event) //AUTH RENGINIO ŠALINIMAS
     {
         $event->delete();
         return redirect('/');
     }
 
-
-    public function storeUpdate(EventModel $event, Request $request)
+    public function approveRegistration($id)
     {
-        if (request()->hasFile('logo')) {
-            $file = $request->file('logo');
-            $fileName = date('YmdHis') . $file->getClientOriginalName();
-            $file->storeAs(('public/images/'), $fileName);
+        DB::table('registrations')
+            ->where('id', $id)->update(['status' => 1, 'updated_at'=>now()]);
+        return back();
+    }
+
+    public function revertRegistration($id)
+    {
+        DB::table('registrations')
+            ->where('id', $id)->update(['status' => 0, 'updated_at'=>now()]);
+        return back();
+    }
+
+    public function deleteRegistration($id)
+    {
+        DB::table('registrations')
+            ->where('id', $id)->delete();
+        return back();
+    }
+
+    public function storeUpdate(EventModel $event, Request $request)  //AUTH RENGINIO IŠSAUGOJIMUI PO REDAGAVIMO - TIMESTAMP EventModel NUIMTAS KAIP NEREIKALINGAS ŠIOJE UŽDUOTYJE
+    {
+        if (request()->hasFile('logo')) {   //PAGAL NUTYLĖJIMĄ BUVO PROBLEMA, KAD FAILAS SAUGOJOSI Į /tmp/ DIREKTORIJĄ O NE Į STORAGE/APP/PUBLIC/IMAGES
+            $file = $request->file('logo'); //ARTISAN STORAGE:LINK NEPADĖJO | RECREATE - NEPADĖJO, TODĖL SUGALVOTAS REALIAI GERESNIS SPRENDIMAS
+            $fileName = date('YmdHis') . $file->getClientOriginalName();    //AIŠKESNIS FAILO VARDAS+NURODYTAS KELIAS+DUOMENŲ BAZĖJE - TIK FAILO PAVADINIMAS
+            $file->storeAs(('public/images/'), $fileName);  //DVI KOMANDOS, NES NEŽINOJAU, KAIP PAKEISTI VIENA IN-PLACE - NEIŠLAIKYTAS DRY PRINCIPAS (DON'T REPEAT YOURSELF). SORRY.
             EventModel::where('id', $event->id)->update($request->only(['name', 'place', 'organizer', 'phone', 'starts', 'ends', 'description']));
             EventModel::where('id', $event->id)->update(['logo' => $fileName]);
         } else {
@@ -89,7 +109,7 @@ class EventController extends Controller
         return redirect('/renginys/' . $event->id);
     }
 
-    public function storeRegistration(Request $request)
+    public function storeRegistration(Request $request)  //IŠSAUGOME VARTOTOJO ĮVESTUS DUOMENIS REGISTRACIJOS FORMOJE Į RENGINĮ
     {
         $validated = $request->validate([
             'userName' => 'required|max:40',
@@ -99,25 +119,21 @@ class EventController extends Controller
         ]);
 
         Registration::create([
-            'user_name' => request('userName'),
-            'user_surname' => request('userSurname'),
-            'user_email' => request('userEmail'),
-            'user_phone' => request('userPhoneNumber'),
-            'user_message' => request('userMessage'),
-            'event_id' => request('eventID'),
-            'status'=> 0
+            'user_name' => request('userName'),         // VARDAS
+            'user_surname' => request('userSurname'),   // PAVARDĖ
+            'user_email' => request('userEmail'),       // E.PAŠTAS
+            'user_phone' => request('userPhoneNumber'), // TEL. NUMERIS
+            'user_message' => request('userMessage'),   // PRANEŠIMAS
+            'event_id' => request('eventID'),           // RENGINIO ID
+            'status'=> 0                                    // REGISTRACIJOS STATUSAS
 //            'user_id'=> Auth::id()
         ]);
         return redirect('/');
     }
 
-    public function store(Request $request){
-//        $input = $request->all();
-//        $input['starts'] = Carbon::createFromFormat('Y-m-d\TH:i',$input['starts']);
-//        $request->replace($input);
 
-//       dump($request->all());
-//       dd($request);
+
+    public function store(Request $request){    // AUTH IŠSAUGOMA NAUJO RENGINIO INFORMACIJA
 
         $validated = $request->validate([
             'name'=>'required|unique:event_models|max:255',
