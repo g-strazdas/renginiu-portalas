@@ -1,4 +1,4 @@
-@extends('main', [$title = 'Renginiai: main']))
+@extends('main', [$title = 'Renginiai: pagrindinis puslapis']))
 @section('content')
         <section>
         <div class="container pb-5 mb-5">

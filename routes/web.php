@@ -25,6 +25,7 @@ Route::post('/update/{event}', [EventController::class, 'storeUpdate']);
 Route::get('/renginys/delete/{event}',[EventController::class, 'deleteEvent']);
 Route::get('/about',[EventController::class, 'about']);
 Route::get('/contacts',[EventController::class, 'contacts']);
+Route::get('/all-events',[EventController::class, 'allEvents']);
 Route::get('/renginys/add-registration/{event}',[EventController::class, 'showRegistration']);
 Route::post('/storeRegistration',[EventController::class, 'storeRegistration']);
 

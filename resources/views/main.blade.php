@@ -7,7 +7,7 @@
 {{--    dd({{ isset($title) ? $title : '' }})--}}
     @include('_partials/head', [$title])
 @else
-    @include('_partials/head', [$title = 'Renginiai: main'])
+    @include('_partials/head', [$title = 'Renginiai: pagrindinis puslapis'])
 @endisset
 
 {{--@include('_partials/head', [$title])--}}
@@ -16,7 +16,7 @@
 @include('_partials/nav')
         <!-- Header-->
 
-@if($title === 'Renginiai: main')
+@if($title === 'Renginiai: pagrindinis puslapis')
 @include('_partials/header')
 @endif
 

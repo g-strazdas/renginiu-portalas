@@ -1,4 +1,4 @@
-@extends('main', [$title = 'Renginiai: pages/update-event.blade.php']))
+@extends('main', [$title = 'Renginiai: atnaujinti renginio informaciją']))
 @section('content')
     <div class="container my-5">
         <h2 class="mb-4">Atnaujinti renginio informaciją</h2>

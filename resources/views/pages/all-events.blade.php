@@ -1,20 +1,30 @@
-@extends('main', [$title = 'Renginiai: informacija apie renginį']))
+@extends('main', [$title = 'Renginiai: visi renginiai']))
 @section('content')
-    <div class="container pt-5">
+    <div class="container py-5">
+        @foreach($events as $event)
+       <div class="container pb-3">
         <div class="card mb-3 border-1">
-            <div class="row g-0">
-                <div class="card-header fs-3 bg-warning d-flex">
+            <div class="card-header fs-3 bg-warning d-flex">
+
+                    @if(Auth::check())
                     <div class="d-flex align-items-center gap-3 col-lg-3">
-                        @if(Auth::check())
-                            <a href="/renginys/delete/{{$event->id}}" class="btn btn-primary">Šalinimas</a>
-                            <a href="/renginys/update/{{$event->id}}" class="btn btn-primary">Duomenų atnaujinimas</a>
-                        @else
-                            <a href="/renginys/add-registration/{{$event->id}}" class="btn btn-primary">Registruotis...</a>
-                        @endif
+{{--                        <div class="btn-group" role="group" aria-label="Basic example">--}}
+{{--                            <a class="btn btn-danger" href="/renginys/delete/{{$event->id}}" onclick="return confirm('Patvirtinkite renginio pašalinimą')">Šalinimas</a>--}}
+{{--                            <a class="btn btn-success" href="/renginys/update/{{$event->id}}">Redagavimas</a>--}}
+{{--                        </div>--}}
+                        <a class="btn btn-danger" href="/renginys/delete/{{$event->id}}" onclick="return confirm('Patvirtinkite renginio pašalinimą')">Šalinimas</a>
+                        <a class="btn btn-success" href="/renginys/update/{{$event->id}}">Redagavimas</a>
                     </div>
-                    <div class="flex-md-column-reverse col-lg-9 text-center">{{$event->name}}</div>
-                </div>
+                    <div class="flex-md-column-reverse col-md-9 text-center fs-4">{{$event->name}}</div>
+                    @else
+                    <div class="d-flex align-items-center col-lg-1">
+                        <a href="/renginys/add-registration/{{$event->id}}" class="btn btn-primary">Registruotis...</a>
+                    </div>
+                    <div class="flex-md-column-reverse col-md-11 text-center fs-4">{{$event->name}}</div>
+                    @endif
+
             </div>
+        </div>
             <div class="row g-0">
                 <div class="col-lg-4 mt-0 d-flex">
                     <img src="{{asset(('storage/images/').$event->logo)}}" class="img-fluid img-thumbnail rounded-start flex-fill" alt="...">
@@ -35,4 +45,6 @@
             </div>
         </div>
     </div>
+   @endforeach
+</div><br><br><br>
 @endsection

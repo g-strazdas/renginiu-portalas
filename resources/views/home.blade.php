@@ -7,7 +7,7 @@
 
 {{--@extends('main', [$title = 'Home.blade.php']))--}}
 
-@extends('main', [$title = 'Renginiai: main'])
+@extends('main', [$title = 'Renginiai: pagrindinis puslapis'])
 {{--    {{dump($title)}}--}}
 @section('content')
 <div class="container">

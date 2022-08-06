@@ -16,7 +16,7 @@ use function PHPUnit\Framework\lessThanOrEqual;
 class EventController extends Controller
 {
     public function __construct()
-    {$this->middleware('auth', ['except' => ['index', 'about', 'showEvent', 'contacts', 'showRegistration','storeRegistration']]);}
+    {$this->middleware('auth', ['except' => ['index', 'about', 'showEvent', 'contacts', 'showRegistration','storeRegistration','allEvents']]);}
 
     public function index() //TRUMPAS APRAŠYMAS BOOTSTRAP CARD'UOSE SU MYGTUKU "PLATESNĖ INFORMACIJA IR REGISTRACIJA..."
     {
@@ -32,6 +32,12 @@ class EventController extends Controller
     public function contacts() //KONTAKTŲ PUSLAPIS
     {
         return view('pages.contacts');
+    }
+
+    public function allEvents() //VISŲ RENGINIŲ PUSLAPIS
+    {
+        $events = EventModel::all();
+        return view('pages.all-events', compact('events'));
     }
 
     public function addEvent() //RENGINIO PRIDĖJIMO FORMA

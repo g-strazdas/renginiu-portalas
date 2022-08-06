@@ -1,11 +1,11 @@
 @extends('main', [$title = 'Renginiai: vartotojų registracijos']))
 @section('content')
     <section>
-        <div class="container-fluid bg-info p-0">
-        <table class="table table-hover table-bordered table-sm table-striped w-100 p-1" style="margin-left: 0px; margin-right: auto; border: solid 2px; background-color: #EDEDED; font-size: 12px;">
-        <thead class="table-primary text-center align-middle"  style="border: solid 2px #000000">
+        <div class="container-fluid bg-info py-3 px-0 vh-100">
+        <table class="table table-hover table-bordered table-sm table-striped w-100  pm-5" style="margin-left: 0px; margin-right: auto; border: solid 2px; background-color: #EDEDED; font-size: 12px;">
+        <thead class="table-primary text-center align-middle mt-5" style="border: solid 2px #000000">
             <tr>
-                <th class="p-1">ID</th>
+                <th>ID</th>
                 <th>Vardas</th>
                 <th>Pavardė</th>
                 <th>El.paštas</th>
@@ -36,24 +36,26 @@
                 <td class = "bg-white">{{str_replace('T',' ',$registration->ends)}}</td>
 {{--                <td class = "bg-white">{{$registration->status}}</td>--}}
                 <td class = "bg-white">
-                    @if ($registration->status == "0")
-                    <form action="/approveRegistration/{{$registration->id}}" method="post" class="m-0 p-0">
-                        @csrf
-                        <input type="hidden" id="userRegister" name="userRegister" value="{{$registration->id}}">
-                        <button type="submit" class="btn btn-sm btn-success m-0 p-0">Registruoti</button>
-                    </form>
-                    @elseif ($registration->status == "1")
-                        <form action="/revertRegistration/{{$registration->id}}" method="post" class="m-0 p-0">
-                            @csrf
-                            <input type="hidden" id="userUnregister" name="userUnregister" value="{{$registration->id}}">
-                            <button type="submit" class="btn btn-sm btn-warning m-0 p-0">Išregistruoti</button>
-                        </form>
-                    @endif
+                    <div>
+                        @if ($registration->status == "0")
+                            <form action="/approveRegistration/{{$registration->id}}" method="post" class="m-0 p-0">
+                                @csrf
+                                <input type="hidden" id="userRegister" name="userRegister" value="{{$registration->id}}">
+                                <button type="submit" class="btn btn-sm btn-success m-0 p-0">Registruoti</button>
+                            </form>
+                        @elseif ($registration->status == "1")
+                            <form action="/revertRegistration/{{$registration->id}}" method="post" class="m-0 p-0">
+                                @csrf
+                                <input type="hidden" id="userUnregister" name="userUnregister" value="{{$registration->id}}">
+                                <button type="submit" class="btn btn-sm btn-warning m-0 p-0">Išregistruoti</button>
+                            </form>
+                        @endif
                         <form action="/deleteRegistration/{{$registration->id}}" method="post" class="m-0 p-0">
                             @csrf
                             <input type="hidden" id="userRemove" name="userRemove" value="{{$registration->id}}">
                             <button type="submit" class="btn btn-sm btn-danger m-0 p-0">Pašalinti</button>
                         </form>
+                    </div>
                 </td>
             </tr>
         @endforeach
